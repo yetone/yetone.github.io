@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <title>yetone 的博客</title>
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/styles/default.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/highlight.min.js"></script>
+  <script src="js/jquery.min.js"></script>
+  <script src="js/marked.min.js"></script>
+  <script src="js/moment.min.js"></script>
+  <script src="js/shani.js"></script>
+  <script src="js/lighthouse.js"></script>
+  <script src="js/app.js"></script>
+  <script type="text/template" id="gist-list-tpl">
+    {% for _, gist in gists %}
+    <div class="gist-item" data-id="{{ gist.id }}" data-raw="{{ gist.files['gistfile1.md'].raw_url }}">
+      <a class="gist-title" href="#/blog/{{ gist.id }}">
+        {{ gist.description }}
+      </a>
+      <div class="gist-meta">
+        <a class="gist-created-at" href="#/blog/{{ gist.id }}">
+          {{ moment(gist.created_at).format('YYYY-MM-DD HH:mm:ss') }}
+        </a>
+        <!--
+        <a class="gist-comment-count" href="#/blog/{{ gist.id }}">
+          {{ gist.comments }}
+        </a>
+        -->
+      </div>
+    </div>
+    {% end %}
+  </script>
+  <script type="text/template" id="gist-detail-tpl">
+    <div data-version="0.1.1" id="gist-container">
+      <div class="title"> {{ title }}</div>
+      <div class="content">{{ content }}</div>
+      <div class="created-at">{{ moment(created_at).format('YYYY-MM-DD HH:mm:ss') }}</div>
+    </div>
+  </script>
+</head>
+<body>
+  <div id="wrapper">
+    <div id="main">
+      <div id="gist-list">
+      </div>
+    </div>
+  </div>
+</body>
