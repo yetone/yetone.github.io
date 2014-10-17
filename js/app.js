@@ -16,9 +16,9 @@ $(function() {
       };
 
   marked.setOptions({
-    highlight: function(code, lang){
+    highlight: function(code, lang) {
       if (languageOverrides[lang]) lang = languageOverrides[lang];
-      return hljs.listLanguages().indexOf(lang) > -1 ? hljs.highlight(lang, code).value : code;
+      return hljs.LANGUAGES[lang] ? hljs.highlight(lang, code).value : code;
     }
   });
 
@@ -127,14 +127,44 @@ $(function() {
         type: 'GET'
       });
       filePromise.done(function(txt) {
-        var content = marked(txt);
-        var data = {
-          title: jsn.description,
-          content: content,
-          created_at: jsn.created_at
-        };
-        fileCacheService.set(key, content);
-        renderData(data);
+        getOtherFileContent(jsn.files, jsn.updated_at, function(acc) {
+          var content = marked(txt + '\n' + acc.join('\n'));
+          var data = {
+            title: jsn.description,
+            content: content,
+            created_at: jsn.created_at
+          };
+          fileCacheService.set(key, content);
+          renderData(data);
+        });
+      });
+    });
+  }
+  function getOtherFileContent(files, updatedAt, cbk) {
+    var fileNames = Object.keys(files).filter(function(item) {
+      return item !== filename;
+    });
+    var acc = [];
+    function done(txt, file, key) {
+      if (typeof key === 'string') {
+        fileCacheService.set(key, txt);
+      }
+      acc.push('<a class="raw-url" href="' + file.raw_url + '">' + file.filename + '</a>\n```' + file.language.toLowerCase() + '\n' + txt + '\n```');
+      if (acc.length === fileNames.length) {
+        cbk(acc);
+      }
+    }
+    console.log(fileNames);
+    if (!fileNames) return cbk(acc);
+    fileNames.forEach(function(fileName, idx) {
+      var file = files[fileName];
+      var key = file.raw_url + ':' + (new Date(updatedAt) - 0);
+      var _cache = fileCacheService.get(key);
+      if (_cache) return done(_cache, file, key);
+      getPromise({
+        url: file.raw_url
+      }).done(function(txt) {
+        done(txt, file, key);
       });
     });
   }

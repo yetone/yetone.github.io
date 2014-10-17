@@ -3,8 +3,8 @@
   <meta charset="utf-8">
   <title>yetone 的博客</title>
   <link rel="stylesheet" href="css/app.css">
-  <link rel="stylesheet" href="css/github.min.css">
-  <script src="js/highlight.min.js"></script>
+  <link rel="stylesheet" href="css/default.css">
+  <script src="js/highlight.pack.js"></script>
   <script src="js/jquery.min.js"></script>
   <script src="js/marked.min.js"></script>
   <script src="js/moment.min.js"></script>
@@ -32,9 +32,9 @@
   </script>
   <script type="text/template" id="gist-detail-tpl">
     <div data-version="0.1.1" id="gist-container">
-      <div class="title"> {{ title }}</div>
-      <div class="content">{{ content }}</div>
-      <div class="created-at">{{ moment(created_at).format('YYYY-MM-DD HH:mm:ss') }}</div>
+      <div class="blog-title"> {{ title }}</div>
+      <div class="blog-content">{{ content }}</div>
+      <div class="blog-created-at">{{ moment(created_at).format('YYYY-MM-DD HH:mm:ss') }}</div>
     </div>
   </script>
 </head>

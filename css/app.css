@@ -1,6 +1,7 @@
 body {
   font-size: 14px;
   line-height: 18px;
+  font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif;
 }
 a {
   color: #000;
@@ -51,11 +52,11 @@ header {
   margin-top: 20px;
 }
 
-.title {
+.blog-title {
   font-size: 22px;
 }
 
-.content {
+.blog-content {
   font-size: 16px;
   line-height: 1.8;
 }
@@ -78,11 +79,15 @@ header {
   padding-bottom: 30px;
 }
 
-.created-at {
+.blog-created-at {
   position: absolute;
   bottom: 0;
   right: 0;
   font-size: 14px;
+}
+
+.raw-url {
+  text-decoration: underline;
 }
 
 @media screen and (max-width: 1280px) {
