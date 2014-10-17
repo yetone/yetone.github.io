@@ -2,7 +2,7 @@ $(function() {
   var $D = $(document),
       $main = $('#main'),
       username = 'yetone',
-      version = '0.1.1',
+      version = '0.1.2',
       gistListTpl = $('#gist-list-tpl').html(),
       gistDetailTpl = $('#gist-detail-tpl').html(),
       filename = '!.md',
@@ -151,7 +151,7 @@ $(function() {
       if (typeof key === 'string') {
         fileCacheService.set(key, txt);
       }
-      acc.push('<hr class="file-split"><a target="_blank" class="raw-url" href="' + file.raw_url + '">' + file.filename + '</a>\n```' + file.language.toLowerCase() + '\n' + txt + '\n```');
+      acc.push('<div class="file-split"></div><a target="_blank" class="raw-url" href="' + file.raw_url + '">' + file.filename + '</a>\n```' + file.language.toLowerCase() + '\n' + txt + '\n```');
       if (acc.length === fileNames.length) {
         cbk(acc);
       }
