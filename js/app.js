@@ -5,7 +5,7 @@ $(function() {
       version = '0.1.1',
       gistListTpl = $('#gist-list-tpl').html(),
       gistDetailTpl = $('#gist-detail-tpl').html(),
-      filename = '_.md',
+      filename = '!.md',
       routers = [
         [/^\/blog\/([^\/]*)/, blogDetailHandler],
         [/^\/$/, homeHandler]
