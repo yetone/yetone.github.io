@@ -7,12 +7,19 @@ $(function() {
       routers = [
         [/^\/blog\/([^\/]*)/, blogDetailHandler],
         [/^\/$/, homeHandler]
-      ];
+      ],
+      languageOverrides = {
+        js: 'javascript',
+        html: 'xml'
+      };
+
   marked.setOptions({
-    highlight: function (code) {
-      return hljs.highlightAuto(code).value;
+    highlight: function(code, lang){
+      if(languageOverrides[lang]) lang = languageOverrides[lang];
+      return hljs.LANGUAGES[lang] ? hljs.highlight(lang, code).value : code;
     }
   });
+
   function getPromise(opt) {
     var promise = $.ajax({
       url: opt.url,
@@ -39,15 +46,15 @@ $(function() {
     var proto = CacheService.prototype;
     proto.genKey = function(key) {
       return this.prefix + ':' + key + ':' + this.version;
-    }
+    };
     proto.get = function(key) {
       var self = this;
-      var key = self.genKey(key);
+      key = self.genKey(key);
       return localStorage.getItem(key);
     };
     proto.set = function(key, value) {
       var self = this;
-      var key = self.genKey(key);
+      key = self.genKey(key);
       return localStorage.setItem(key, value);
     };
     return CacheService;
