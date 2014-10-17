@@ -5,6 +5,7 @@ $(function() {
       version = '0.1.1',
       gistListTpl = $('#gist-list-tpl').html(),
       gistDetailTpl = $('#gist-detail-tpl').html(),
+      filename = 'blog.md',
       routers = [
         [/^\/blog\/([^\/]*)/, blogDetailHandler],
         [/^\/$/, homeHandler]
@@ -78,8 +79,9 @@ $(function() {
       var render = shani.compile(gistListTpl);
       var html = render({
         gists: jsn.filter(function(item) {
-          return !!item.description && !!item.files['gistfile1.md'] && (item.files['gistfile1.md'].language === 'Markdown');
-        })
+          return !!item.description && !!item.files[filename] && (item.files[filename].language === 'Markdown');
+        }),
+        filename: filename
       });
       listCacheService.set(page, html);
       cbk(html);
@@ -105,11 +107,11 @@ $(function() {
       type: 'GET'
     });
     detailPromise.done(function(jsn) {
-      if (!jsn.description || !jsn.files['gistfile1.md'] || (jsn.files['gistfile1.md'].language !== 'Markdown')) {
+      if (!jsn.description || !jsn.files[filename] || (jsn.files[filename].language !== 'Markdown')) {
         console.log('not a Markdown file!!!');
         return;
       }
-      var rawUrl = jsn.files['gistfile1.md'].raw_url;
+      var rawUrl = jsn.files[filename].raw_url;
       var key = rawUrl + ':' + (new Date(jsn.updated_at) - 0);
       var _cache = fileCacheService.get(key);
       if (_cache) {
@@ -146,6 +148,7 @@ $(function() {
   }
   function homeHandler(request) {
     getList(request.params.page || '1', function(html) {
+      if (location.hash !== '') return;
       var $gistList = $main.find('#gist-list');
       if (!$gistList.length) {
         $main.html('<div id="gist-list">' + html + '</div>');
@@ -158,6 +161,7 @@ $(function() {
   }
   function blogDetailHandler(request, id) {
     getDetail(id, function(html) {
+      if (request.path !== location.hash.slice(1)) return;
       $main.html(html);
       removeLoading();
     });
