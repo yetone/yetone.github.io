@@ -2,7 +2,7 @@ $(function() {
   var $D = $(document),
       $main = $('#main'),
       username = 'yetone',
-      version = '0.1.2',
+      version = '0.1.3.5',
       gistListTpl = $('#gist-list-tpl').html(),
       gistDetailTpl = $('#gist-detail-tpl').html(),
       filename = '!.md',
@@ -129,7 +129,7 @@ $(function() {
       });
       filePromise.done(function(txt) {
         getOtherFileContent(jsn.files, jsn.updated_at, function(acc) {
-          var content = marked(txt + '\n\n' + acc.join('\n\n'));
+          var content = marked(txt) + acc.join('');
           var data = {
             title: jsn.description,
             content: content,
@@ -147,12 +147,20 @@ $(function() {
       return item !== filename;
     });
     var acc = [];
-    function done(txt, file, key) {
-      if (typeof key === 'string') {
-        fileCacheService.set(key, txt);
-      }
-      acc.push('<div class="file-split"></div><a target="_blank" class="raw-url" href="' + file.raw_url + '">' + file.filename + '</a>\n```' + file.language.toLowerCase() + '\n' + txt + '\n```');
+    function _render(txt, file) {
+      return '<div class="file">' +
+                 '<div class="file-header">' +
+                   '<a target="_blank" class="raw-url" href="' + file.raw_url + '">' + file.filename + '</a>' +
+                 '</div>' +
+                 '<div class="file-content">' +
+                   marked('```' + file.language.toLowerCase() + '\n' + txt + '\n```') +
+                 '</div>' +
+              '</div>';
+    }
+    function done(result) {
+      acc.push(result);
       if (acc.length === fileNames.length) {
+        console.log(acc);
         cbk(acc);
       }
     }
@@ -161,11 +169,14 @@ $(function() {
       var file = files[fileName];
       var key = file.raw_url + ':' + (new Date(updatedAt) - 0);
       var _cache = fileCacheService.get(key);
-      if (_cache) return done(_cache, file, key);
+      if (_cache) return done(_cache);
+
       getPromise({
         url: file.raw_url
       }).done(function(txt) {
-        done(txt, file, key);
+        var result = _render(txt, file);
+        fileCacheService.set(key, result);
+        done(result);
       });
     });
   }

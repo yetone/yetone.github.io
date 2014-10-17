@@ -97,10 +97,9 @@ header {
   color: #333;
 }
 
-.file-split {
-  height: 1px;
-  background: #F1F1F1;
-  margin-bottom: 10px;
+.file {
+  padding-top: 10px;
+  border-top: 1px solid #f1f1f1;
 }
 
 @media screen and (max-width: 1280px) {
