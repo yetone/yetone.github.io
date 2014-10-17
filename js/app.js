@@ -15,8 +15,8 @@ $(function() {
 
   marked.setOptions({
     highlight: function(code, lang){
-      if(languageOverrides[lang]) lang = languageOverrides[lang];
-      return hljs.LANGUAGES[lang] ? hljs.highlight(lang, code).value : code;
+      if (languageOverrides[lang]) lang = languageOverrides[lang];
+      return hljs.listLanguages().indexOf(lang) > -1 ? hljs.highlight(lang, code).value : code;
     }
   });
 
