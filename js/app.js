@@ -152,7 +152,7 @@ $(function() {
       var $gistList = $main.find('#gist-list');
       if (!$gistList.length) {
         $main.html('<div id="gist-list">' + html + '</div>');
-      } else {
+      } else if ($gistList.html() !== html) {
         $gistList.html(html);
       }
       removeLoading();
@@ -162,7 +162,9 @@ $(function() {
   function blogDetailHandler(request, id) {
     getDetail(id, function(html) {
       if (request.path !== location.hash.slice(1)) return;
-      $main.html(html);
+      if ($main.html() !== html) {
+        $main.html(html);
+      }
       removeLoading();
     });
   }
