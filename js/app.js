@@ -156,7 +156,6 @@ $(function() {
         cbk(acc);
       }
     }
-    console.log(fileNames);
     if (!fileNames) return cbk(acc);
     fileNames.forEach(function(fileName, idx) {
       var file = files[fileName];
