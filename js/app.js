@@ -61,7 +61,7 @@ $(function() {
     };
     return CacheService;
   })();
-  var listCacheService = new CacheService('list', new Date() - 0),
+  var listCacheService = new CacheService('list', gistListTpl.length + version),
       detailCacheService = new CacheService('detail', gistDetailTpl.length + version),
       fileCacheService = new CacheService('file', gistDetailTpl.length + version);
   function getList(page, cbk) {
