@@ -78,11 +78,12 @@ $(function() {
     });
   }
   function getDetail(id, cbk) {
+    var justCache = !cbk;
     cbk = cbk || function() {};
     var cache = detailCacheService.get(id);
     if (cache) {
       cbk(cache);
-    } else {
+    } else if (!justCache) {
       addLoading();
     }
     function renderData(data) {
