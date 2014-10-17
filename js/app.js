@@ -129,7 +129,7 @@ $(function() {
       });
       filePromise.done(function(txt) {
         getOtherFileContent(jsn.files, jsn.updated_at, function(acc) {
-          var content = marked(txt + '\n' + acc.join('\n'));
+          var content = marked(txt + '\n\n' + acc.join('\n\n'));
           var data = {
             title: jsn.description,
             content: content,
