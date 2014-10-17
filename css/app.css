@@ -57,8 +57,9 @@ header {
 }
 
 .blog-title {
-  font-size: 22px;
+  font-size: 24px;
   padding-bottom: 10px;
+  font-weight: normal;
 }
 
 .blog-content {
