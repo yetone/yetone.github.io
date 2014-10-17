@@ -149,7 +149,7 @@ $(function() {
       if (typeof key === 'string') {
         fileCacheService.set(key, txt);
       }
-      acc.push('<a class="raw-url" href="' + file.raw_url + '">' + file.filename + '</a>\n```' + file.language.toLowerCase() + '\n' + txt + '\n```');
+      acc.push('<a target="_blank" class="raw-url" href="' + file.raw_url + '">' + file.filename + '</a>\n```' + file.language.toLowerCase() + '\n' + txt + '\n```');
       if (acc.length === fileNames.length) {
         cbk(acc);
       }
