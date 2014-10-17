@@ -1,6 +1,7 @@
 $(function() {
   var $D = $(document),
       $main = $('#main'),
+      username = 'yetone',
       version = '0.1.1',
       gistListTpl = $('#gist-list-tpl').html(),
       gistDetailTpl = $('#gist-detail-tpl').html(),
@@ -70,7 +71,7 @@ $(function() {
       addLoading();
     }
     var gistsPromise = getPromise({
-      url: 'https://api.github.com/users/yetone/gists?page=' + page,
+      url: 'https://api.github.com/users/' + username + '/gists?page=' + page,
       type: 'GET'
     });
     gistsPromise.done(function(jsn) {
