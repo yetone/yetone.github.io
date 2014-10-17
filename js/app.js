@@ -16,13 +16,7 @@ $(function() {
   function getPromise(opt) {
     var promise = $.ajax({
       url: opt.url,
-      type: opt.type || 'GET',
-      beforeSend: function() {
-        addLoading();
-      },
-      complete: function() {
-        removeLoading();
-      }
+      type: opt.type || 'GET'
     });
     return promise;
   }
@@ -63,7 +57,11 @@ $(function() {
       fileCacheService = new CacheService('file', gistDetailTpl.length + version);
   function getList(page, cbk) {
     var cache = listCacheService.get(page);
-    if (cache) return cbk(cache);
+    if (cache) {
+      cbk(cache);
+    } else {
+      addLoading();
+    }
     var gistsPromise = getPromise({
       url: 'https://api.github.com/users/yetone/gists?page=' + page,
       type: 'GET'
@@ -76,13 +74,17 @@ $(function() {
         })
       });
       listCacheService.set(page, html);
-      return cbk(html);
+      cbk(html);
     });
   }
   function getDetail(id, cbk) {
     cbk = cbk || function() {};
     var cache = detailCacheService.get(id);
-    if (cache) return cbk(cache);
+    if (cache) {
+      cbk(cache);
+    } else {
+      addLoading();
+    }
     function renderData(data) {
       var render = shani.compile(gistDetailTpl);
       var html = render(data);
@@ -99,7 +101,8 @@ $(function() {
         return;
       }
       var rawUrl = jsn.files['gistfile1.md'].raw_url;
-      var _cache = fileCacheService.get(rawUrl);
+      var key = rawUrl + ':' + (new Date(jsn.updated_at) - 0);
+      var _cache = fileCacheService.get(key);
       if (_cache) {
         var data = {
           title: jsn.description,
@@ -119,7 +122,7 @@ $(function() {
           content: content,
           created_at: jsn.created_at
         };
-        fileCacheService.set(rawUrl, content);
+        fileCacheService.set(key, content);
         renderData(data);
       });
     });
@@ -140,12 +143,14 @@ $(function() {
       } else {
         $gistList.html(html);
       }
+      removeLoading();
       cacheAll();
     });
   }
   function blogDetailHandler(request, id) {
     getDetail(id, function(html) {
       $main.html(html);
+      removeLoading();
     });
   }
   router(routers);
