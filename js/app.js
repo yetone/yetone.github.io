@@ -153,14 +153,13 @@ $(function() {
                    '<a target="_blank" class="raw-url" href="' + file.raw_url + '">' + file.filename + '</a>' +
                  '</div>' +
                  '<div class="file-content">' +
-                   marked('```' + file.language.toLowerCase() + '\n' + txt + '\n```') +
+                   marked('```' + (file.language ? file.language.toLowerCase() : '') + '\n' + txt + '\n```') +
                  '</div>' +
               '</div>';
     }
     function done(result) {
       acc.push(result);
       if (acc.length === fileNames.length) {
-        console.log(acc);
         cbk(acc);
       }
     }
