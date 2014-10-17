@@ -102,6 +102,30 @@ header {
   border-top: 1px solid #f1f1f1;
 }
 
+.icon {
+  margin-right: 2px;
+}
+
+@font-face {
+  font-family: 'octicons';
+  src: url(../font/octicons-a3034da883189027d9623a32c24b59d1.eot?#iefix) format("embedded-opentype"),url(../font/octicons-03ce910f6328ba840aebb2f2f3eabbf3.woff) format("woff"),url(../font/octicons-bb517fc28c80374c03352e84ef5f167b.ttf) format("truetype"),url(../font/octicons-d42b7ba4333417ba2a114b1f0407aa5b.svg#octicons) format("svg");
+  font-weight: normal;
+  font-style: normal
+}
+
+.octicon {
+  font: normal normal 16px octicons;
+  line-height: 1;
+  display: inline-block;
+  text-decoration: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.octicon-gist:before {
+  content: '\f011';
+}
+
 @media screen and (max-width: 1280px) {
   #main {
     width: 720px;

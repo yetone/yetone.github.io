@@ -5,6 +5,7 @@ $(function() {
       version = '0.1.3.5',
       gistListTpl = $('#gist-list-tpl').html(),
       gistDetailTpl = $('#gist-detail-tpl').html(),
+      gistFileTpl = $('#gist-file-tpl').html(),
       filename = '!.md',
       routers = [
         [/^\/blog\/([^\/]*)/, blogDetailHandler],
@@ -62,8 +63,8 @@ $(function() {
     return CacheService;
   })();
   var listCacheService = new CacheService('list', gistListTpl.length + version),
-      detailCacheService = new CacheService('detail', gistDetailTpl.length + version),
-      fileCacheService = new CacheService('file', gistDetailTpl.length + version);
+      detailCacheService = new CacheService('detail', gistDetailTpl.length + gistFileTpl.length + version),
+      fileCacheService = new CacheService('file', gistDetailTpl.length + gistFileTpl.length + version);
   function getList(page, cbk) {
     var cache = listCacheService.get(page);
     if (cache) {
@@ -147,16 +148,7 @@ $(function() {
       return item !== filename;
     });
     var acc = [];
-    function _render(txt, file) {
-      return '<div class="file">' +
-                 '<div class="file-header">' +
-                   '<a target="_blank" class="raw-url" href="' + file.raw_url + '">' + file.filename + '</a>' +
-                 '</div>' +
-                 '<div class="file-content">' +
-                   marked('```' + (file.language ? file.language.toLowerCase() : '') + '\n' + txt + '\n```') +
-                 '</div>' +
-              '</div>';
-    }
+    var render = shani.compile(gistFileTpl);
     function done(result) {
       acc.push(result);
       if (acc.length === fileNames.length) {
@@ -173,7 +165,10 @@ $(function() {
       getPromise({
         url: file.raw_url
       }).done(function(txt) {
-        var result = _render(txt, file);
+        var result = render({
+          txt: txt,
+          file: file
+        });
         fileCacheService.set(key, result);
         done(result);
       });
