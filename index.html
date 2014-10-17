@@ -12,23 +12,25 @@
   <script src="js/lighthouse.js"></script>
   <script src="js/app.js"></script>
   <script type="text/template" id="gist-list-tpl">
-    {% for _, gist in gists %}
-    <div class="gist-item" data-id="{{ gist.id }}" data-raw="{{ gist.files[filename].raw_url }}">
-      <a class="gist-title" href="#/blog/{{ gist.id }}">
-        {{ gist.description }}
-      </a>
-      <div class="gist-meta">
-        <a class="gist-created-at" href="#/blog/{{ gist.id }}">
-          {{ moment(gist.created_at).format('YYYY-MM-DD HH:mm:ss') }}
+    <ul id="gist-list">
+      {% for _, gist in gists %}
+      <li class="gist-item" data-id="{{ gist.id }}" data-raw="{{ gist.files[filename].raw_url }}">
+        <a class="gist-title" href="#/blog/{{ gist.id }}">
+          {{ gist.description }}
         </a>
-        <!--
-        <a class="gist-comment-count" href="#/blog/{{ gist.id }}">
-          {{ gist.comments }}
-        </a>
-        -->
-      </div>
-    </div>
-    {% end %}
+        <div class="gist-meta">
+          <a class="gist-created-at" href="#/blog/{{ gist.id }}">
+            {{ moment(gist.created_at).format('YYYY-MM-DD HH:mm:ss') }}
+          </a>
+          <!--
+          <a class="gist-comment-count" href="#/blog/{{ gist.id }}">
+            {{ gist.comments }}
+          </a>
+          -->
+        </div>
+      </li>
+      {% end %}
+    </ul>
   </script>
   <script type="text/template" id="gist-detail-tpl">
     <div data-version="0.1.1" id="gist-container">
@@ -54,8 +56,6 @@
 <body>
   <div id="wrapper">
     <div id="main">
-      <div id="gist-list">
-      </div>
     </div>
   </div>
 </body>

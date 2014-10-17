@@ -50,6 +50,7 @@ header {
 }
 
 #gist-list {
+  list-style-type: square;
 }
 
 .gist-item {

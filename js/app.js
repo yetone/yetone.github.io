@@ -185,11 +185,8 @@ $(function() {
   function homeHandler(request) {
     getList(request.params.page || '1', function(html) {
       if (location.hash !== '') return;
-      var $gistList = $main.find('#gist-list');
-      if (!$gistList.length) {
-        $main.html('<div id="gist-list">' + html + '</div>');
-      } else if ($gistList.html() !== html) {
-        $gistList.html(html);
+      if ($main.html() !== html) {
+        $main.html(html);
       }
       removeLoading();
       cacheAll();
