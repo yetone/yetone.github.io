@@ -3,9 +3,13 @@ body {
   line-height: 18px;
   font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif;
 }
-a {
+a:link,
+a:visited {
   color: #000;
   text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
 }
 header {
   text-align: center;
@@ -79,7 +83,8 @@ header {
   padding-bottom: 30px;
 }
 
-.blog-created-at {
+.blog-created-at:link,
+.blog-created_at:visited {
   position: absolute;
   bottom: 0;
   right: 0;
@@ -87,8 +92,9 @@ header {
   color: #333;
 }
 
-.raw-url {
-  text-decoration: underline;
+.blog-content a:link,
+.blog-content a:visited {
+  color: #333;
 }
 
 @media screen and (max-width: 1280px) {

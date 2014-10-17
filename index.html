@@ -34,7 +34,7 @@
     <div data-version="0.1.1" id="gist-container">
       <div class="blog-title"> {{ title }}</div>
       <div class="blog-content">{{ content }}</div>
-      <div class="blog-created-at">{{ moment(created_at).format('YYYY-MM-DD HH:mm:ss') }}</div>
+      <a class="blog-created-at" target="_blank" href="{{ html_url }}">{{ moment(created_at).format('YYYY-MM-DD HH:mm:ss') }}</a>
     </div>
   </script>
 </head>

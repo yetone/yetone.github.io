@@ -118,7 +118,8 @@ $(function() {
         var data = {
           title: jsn.description,
           content: _cache,
-          created_at: jsn.created_at
+          created_at: jsn.created_at,
+          html_url: jsn.html_url
         };
         return renderData(data);
       }
@@ -132,7 +133,8 @@ $(function() {
           var data = {
             title: jsn.description,
             content: content,
-            created_at: jsn.created_at
+            created_at: jsn.created_at,
+            html_url: jsn.html_url
           };
           fileCacheService.set(key, content);
           renderData(data);
