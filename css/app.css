@@ -10,6 +10,16 @@
   background:#e2e2e2;
   color:#333;
 }
+::-webkit-scrollbar-track-piece {
+  background-color: #fff;
+}
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: #cdcdcd;
+}
 body {
   font-size: 14px;
   line-height: 18px;
