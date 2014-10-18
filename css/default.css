@@ -11,6 +11,9 @@ pre code {
   font-size: 14px;
   line-height: 19.8px;
   font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  overflow: auto;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
 pre code,
