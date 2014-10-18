@@ -18,7 +18,7 @@
   height: 10px;
 }
 ::-webkit-scrollbar-thumb {
-  background: #cdcdcd;
+  background: #ddd;
 }
 body {
   font-size: 14px;
