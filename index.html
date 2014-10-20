@@ -35,21 +35,23 @@
   <script type="text/template" id="gist-detail-tpl">
     <div data-version="0.1.1" id="gist-container">
       <h1 class="blog-title"> {{ title }}</h1>
-      <div class="blog-content">{{ content }}</div>
+      <div class="blog-content">
+        {{ marked(content) }}
+        {% for _, file in files %}
+          <div class="file">
+            <div class="file-header">
+              <span class="icon">
+                <b class="octicon octicon-gist"></b>
+              </span>
+              <a target="_blank" class="raw-url" href="{{ file.raw_url }}">{{ file.filename }}</a>
+            </div>
+            <div class="file-content">
+              {{ marked('```' + (file.language ? file.language.toLowerCase() : '') + '\n' + file.content + '\n```') }}
+            </div>
+          </div>
+        {% end %}
+      </div>
       <a class="blog-created-at" target="_blank" href="{{ html_url }}">{{ moment(created_at).format('YYYY-MM-DD HH:mm:ss') }}</a>
-    </div>
-  </script>
-  <script type="text/template" id="gist-file-tpl">
-    <div class="file">
-      <div class="file-header">
-        <span class="icon">
-          <b class="octicon octicon-gist"></b>
-        </span>
-        <a target="_blank" class="raw-url" href="{{ file.raw_url }}">{{ file.filename }}</a>
-      </div>
-      <div class="file-content">
-        {{ marked('```' + (file.language ? file.language.toLowerCase() : '') + '\n' + file.content + '\n```') }}
-      </div>
     </div>
   </script>
 </head>

@@ -2,10 +2,11 @@ $(function() {
   var $D = $(document),
       $main = $('#main'),
       username = 'yetone',
-      version = '0.2',
+      version = '0.2.1',
       gistListTpl = $('#gist-list-tpl').html(),
       gistDetailTpl = $('#gist-detail-tpl').html(),
-      gistFileTpl = $('#gist-file-tpl').html(),
+      listRender = shani.compile(gistListTpl),
+      detailRender = shani.compile(gistDetailTpl),
       filename = '!.md',
       routers = [
         [/^\/blog\/([^\/]*)/, blogDetailHandler],
@@ -63,7 +64,7 @@ $(function() {
     return CacheService;
   })();
   var listCacheService = new CacheService('list', username + gistListTpl.length + version),
-      detailCacheService = new CacheService('detail', username + gistDetailTpl.length + gistFileTpl.length + version);
+      detailCacheService = new CacheService('detail', username + gistDetailTpl.length + version);
   function getList(page, cbk) {
     var cache = listCacheService.get(page);
     if (cache) {
@@ -76,8 +77,7 @@ $(function() {
       type: 'GET'
     });
     gistsPromise.done(function(jsn) {
-      var render = shani.compile(gistListTpl);
-      var html = render({
+      var html = listRender({
         gists: jsn.filter(function(item) {
           return !!item.description && !!item.files[filename] && (item.files[filename].language === 'Markdown');
         }),
@@ -96,12 +96,6 @@ $(function() {
     } else if (!justCache) {
       addLoading();
     }
-    function renderData(data) {
-      var render = shani.compile(gistDetailTpl);
-      var html = render(data);
-      detailCacheService.set(id, html);
-      return cbk(html);
-    }
     var detailPromise = getPromise({
       url: 'https://api.github.com/gists/' + id,
       type: 'GET'
@@ -111,28 +105,20 @@ $(function() {
         console.log('not a Markdown file!!!');
         return;
       }
+      var files = jsn.files;
+      var mainFile = files[filename];
+      delete files[filename];
       var data = {
         title: jsn.description,
-        content: getFileContent(jsn.files),
+        content: mainFile.content,
+        files: files,
         created_at: jsn.created_at,
         html_url: jsn.html_url
       };
-      renderData(data);
+      var html = detailRender(data);
+      detailCacheService.set(id, html);
+      return cbk(html);
     });
-  }
-  function getFileContent(files) {
-    var mainFile = files[filename];
-    var acc = [];
-    var render = shani.compile(gistFileTpl);
-    var file;
-    for (var key in files) {
-      if (!files.hasOwnProperty(key) || key === filename) continue;
-      file = files[key];
-      acc.push(render({
-        file: file
-      }));
-    }
-    return marked(mainFile.content) + acc.join('');
   }
   function cacheAll() {
     var $gistItemList = $('.gist-item');
