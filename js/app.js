@@ -2,7 +2,7 @@ $(function() {
   var $D = $(document),
       $main = $('#main'),
       username = 'yetone',
-      version = '0.1.3.5',
+      version = '0.2',
       gistListTpl = $('#gist-list-tpl').html(),
       gistDetailTpl = $('#gist-detail-tpl').html(),
       gistFileTpl = $('#gist-file-tpl').html(),
@@ -112,67 +112,28 @@ $(function() {
         console.log('not a Markdown file!!!');
         return;
       }
-      var rawUrl = jsn.files[filename].raw_url;
-      var key = rawUrl + ':' + (new Date(jsn.updated_at) - 0);
-      var _cache = fileCacheService.get(key);
-      if (_cache) {
-        var data = {
-          title: jsn.description,
-          content: _cache,
-          created_at: jsn.created_at,
-          html_url: jsn.html_url
-        };
-        return renderData(data);
-      }
-      var filePromise = getPromise({
-        url: rawUrl,
-        type: 'GET'
-      });
-      filePromise.done(function(txt) {
-        getOtherFileContent(jsn.files, jsn.updated_at, function(acc) {
-          var content = marked(txt) + acc.join('');
-          var data = {
-            title: jsn.description,
-            content: content,
-            created_at: jsn.created_at,
-            html_url: jsn.html_url
-          };
-          fileCacheService.set(key, content);
-          renderData(data);
-        });
-      });
+      var data = {
+        title: jsn.description,
+        content: getFileContent(jsn.files),
+        created_at: jsn.created_at,
+        html_url: jsn.html_url
+      };
+      renderData(data);
     });
   }
-  function getOtherFileContent(files, updatedAt, cbk) {
-    var fileNames = Object.keys(files).filter(function(item) {
-      return item !== filename;
-    });
+  function getFileContent(files) {
+    var mainFile = files[filename];
     var acc = [];
     var render = shani.compile(gistFileTpl);
-    function done(result) {
-      acc.push(result);
-      if (acc.length === fileNames.length) {
-        cbk(acc);
-      }
+    var file;
+    for (var key in files) {
+      if (!files.hasOwnProperty(key) || key === filename) continue;
+      file = files[key];
+      acc.push(render({
+        file: file
+      }));
     }
-    if (!fileNames) return cbk(acc);
-    fileNames.forEach(function(fileName, idx) {
-      var file = files[fileName];
-      var key = file.raw_url + ':' + (new Date(updatedAt) - 0);
-      var _cache = fileCacheService.get(key);
-      if (_cache) return done(_cache);
-
-      getPromise({
-        url: file.raw_url
-      }).done(function(txt) {
-        var result = render({
-          txt: txt,
-          file: file
-        });
-        fileCacheService.set(key, result);
-        done(result);
-      });
-    });
+    return marked(mainFile.content) + acc.join('');
   }
   function cacheAll() {
     var $gistItemList = $('.gist-item');
