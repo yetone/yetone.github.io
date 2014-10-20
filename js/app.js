@@ -62,9 +62,9 @@ $(function() {
     };
     return CacheService;
   })();
-  var listCacheService = new CacheService('list', gistListTpl.length + version),
-      detailCacheService = new CacheService('detail', gistDetailTpl.length + gistFileTpl.length + version),
-      fileCacheService = new CacheService('file', gistDetailTpl.length + gistFileTpl.length + version);
+  var listCacheService = new CacheService('list', username + gistListTpl.length + version),
+      detailCacheService = new CacheService('detail', username + gistDetailTpl.length + gistFileTpl.length + version),
+      fileCacheService = new CacheService('file', username + gistDetailTpl.length + gistFileTpl.length + version);
   function getList(page, cbk) {
     var cache = listCacheService.get(page);
     if (cache) {
