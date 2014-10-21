@@ -2,7 +2,7 @@ $(function() {
   var $D = $(document),
       $main = $('#main'),
       username = 'yetone',
-      version = '0.2.1',
+      version = '0.2.3',
       gistListTpl = $('#gist-list-tpl').html(),
       gistDetailTpl = $('#gist-detail-tpl').html(),
       listRender = shani.compile(gistListTpl),
