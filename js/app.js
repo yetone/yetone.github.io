@@ -87,6 +87,18 @@ $(function() {
       cbk(html);
     });
   }
+  function getIframes(files) {
+    var acc = [];
+    for (var key in files) {
+      if (!files.hasOwnProperty(key)) continue;
+      var file = files[key];
+      if (file.language !== 'JSON') continue;
+      if (JSON.parse(file.content).type !== 'FeatureCollection') continue;
+      acc.push('https://render.githubusercontent.com/view/geojson/?url=' + file.raw_url);
+      delete files[key];
+    }
+    return acc;
+  }
   function getDetail(id, cbk) {
     var justCache = !cbk;
     cbk = cbk || function() {};
@@ -111,8 +123,9 @@ $(function() {
       var data = {
         title: jsn.description,
         content: mainFile.content,
-        files: files,
         created_at: jsn.created_at,
+        iframes: getIframes(files),
+        files: files,
         html_url: jsn.html_url
       };
       var html = detailRender(data);

@@ -37,6 +37,9 @@
       <h1 class="blog-title"> {{ title }}</h1>
       <div class="blog-content">
         {{ marked(content) }}
+        {% for _, src in iframes %}
+        <iframe class="render-view" src="{{ src }}" sandbox="allow-scripts allow-same-origin"></iframe>
+        {% end %}
         {% for _, file in files %}
           <div class="file">
             <div class="file-header">

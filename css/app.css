@@ -152,6 +152,12 @@ header {
   content: '\f011';
 }
 
+.render-view {
+  border: 0;
+  width: 100%;
+  height: 500px;
+}
+
 @media screen and (max-width: 1280px) {
   #main {
     width: 720px;
