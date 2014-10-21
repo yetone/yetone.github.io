@@ -37,9 +37,6 @@
       <h1 class="blog-title"> {{ title }}</h1>
       <div class="blog-content">
         {{ marked(content) }}
-        {% for _, src in iframes %}
-        <iframe class="render-view" src="{{ src }}" sandbox="allow-scripts allow-same-origin"></iframe>
-        {% end %}
         {% for _, file in files %}
           <div class="file">
             <div class="file-header">
@@ -49,7 +46,11 @@
               <a target="_blank" class="raw-url" href="{{ file.raw_url }}">{{ file.filename }}</a>
             </div>
             <div class="file-content">
+              {% if file.src %}
+              <iframe class="render-view" src="{{ file.src }}" sandbox="allow-scripts allow-same-origin"></iframe>
+              {% else %}
               {{ marked('```' + (file.language ? file.language.toLowerCase() : '') + '\n' + file.content + '\n```') }}
+              {% end %}
             </div>
           </div>
         {% end %}

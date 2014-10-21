@@ -88,27 +88,22 @@ $(function() {
       cbk(html);
     });
   }
-  function getIframes(files) {
-    var acc = [],
-        src;
+  function touchSrc(files) {
     for (var key in files) {
       if (!files.hasOwnProperty(key)) continue;
       var file = files[key];
       switch (file.language) {
         case 'JSON':
           if (JSON.parse(file.content).type !== 'FeatureCollection') continue;
-          src = 'https://render.githubusercontent.com/view/geojson/?url=' + file.raw_url;
+          file.src = 'https://render.githubusercontent.com/view/geojson/?url=' + file.raw_url;
           break;
         case 'HTML':
-          src = file.raw_url.replace('gist.githubusercontent.com', 'cdn.rawgit.com');
+          file.src = file.raw_url.replace('gist.githubusercontent.com', 'cdn.rawgit.com');
           break;
         default:
           continue;
       }
-      acc.push(src);
-      delete files[key];
     }
-    return acc;
   }
   function getDetail(id, cbk) {
     var justCache = !cbk,
@@ -135,11 +130,11 @@ $(function() {
           data,
           html;
       delete files[filename];
+      touchSrc(files);
       data = {
         title: jsn.description,
         content: mainFile.content,
         created_at: jsn.created_at,
-        iframes: getIframes(files),
         files: files,
         html_url: jsn.html_url
       };
