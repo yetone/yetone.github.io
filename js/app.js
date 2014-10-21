@@ -89,12 +89,22 @@ $(function() {
   }
   function getIframes(files) {
     var acc = [];
+    var src;
     for (var key in files) {
       if (!files.hasOwnProperty(key)) continue;
       var file = files[key];
-      if (file.language !== 'JSON') continue;
-      if (JSON.parse(file.content).type !== 'FeatureCollection') continue;
-      acc.push('https://render.githubusercontent.com/view/geojson/?url=' + file.raw_url);
+      switch (file.language) {
+        case 'JSON':
+          if (JSON.parse(file.content).type !== 'FeatureCollection') continue;
+          src = 'https://render.githubusercontent.com/view/geojson/?url=' + file.raw_url;
+          break;
+        case 'HTML':
+          src = file.raw_url.replace('gist.githubusercontent.com', 'cdn.rawgit.com');
+          break;
+        default:
+          continue;
+      }
+      acc.push(src);
       delete files[key];
     }
     return acc;
