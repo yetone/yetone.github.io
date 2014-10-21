@@ -33,8 +33,8 @@ $(function() {
   }
   function addLoading() {
     removeLoading();
-    var $loadingBg = $('<div id="loading-bg"></div>');
-    var $loading = $('<div id="loading">正在加载...</div>');
+    var $loadingBg = $('<div id="loading-bg"></div>'),
+        $loading = $('<div id="loading">正在加载...</div>');
     $('body').append($loadingBg)
       .append($loading);
   }
@@ -66,13 +66,14 @@ $(function() {
   var listCacheService = new CacheService('list', username + gistListTpl.length + version),
       detailCacheService = new CacheService('detail', username + gistDetailTpl.length + version);
   function getList(page, cbk) {
-    var cache = listCacheService.get(page);
+    var cache = listCacheService.get(page),
+        gistsPromise;
     if (cache) {
       cbk(cache);
     } else {
       addLoading();
     }
-    var gistsPromise = getPromise({
+    gistsPromise = getPromise({
       url: 'https://api.github.com/users/' + username + '/gists?page=' + page,
       type: 'GET'
     });
@@ -88,8 +89,8 @@ $(function() {
     });
   }
   function getIframes(files) {
-    var acc = [];
-    var src;
+    var acc = [],
+        src;
     for (var key in files) {
       if (!files.hasOwnProperty(key)) continue;
       var file = files[key];
@@ -110,15 +111,17 @@ $(function() {
     return acc;
   }
   function getDetail(id, cbk) {
-    var justCache = !cbk;
+    var justCache = !cbk,
+        cache,
+        detailPromise;
     cbk = cbk || function() {};
-    var cache = detailCacheService.get(id);
+    cache = detailCacheService.get(id);
     if (cache) {
       cbk(cache);
     } else if (!justCache) {
       addLoading();
     }
-    var detailPromise = getPromise({
+    detailPromise = getPromise({
       url: 'https://api.github.com/gists/' + id,
       type: 'GET'
     });
@@ -127,10 +130,12 @@ $(function() {
         console.log('not a Markdown file!!!');
         return;
       }
-      var files = jsn.files;
-      var mainFile = files[filename];
+      var files = jsn.files,
+          mainFile = files[filename],
+          data,
+          html;
       delete files[filename];
-      var data = {
+      data = {
         title: jsn.description,
         content: mainFile.content,
         created_at: jsn.created_at,
@@ -138,7 +143,7 @@ $(function() {
         files: files,
         html_url: jsn.html_url
       };
-      var html = detailRender(data);
+      html = detailRender(data);
       detailCacheService.set(id, html);
       return cbk(html);
     });
@@ -146,8 +151,8 @@ $(function() {
   function cacheAll() {
     var $gistItemList = $('.gist-item');
     $gistItemList.each(function(_, item) {
-      var $item = $(item);
-      var id = $item.data('id');
+      var $item = $(item),
+          id = $item.data('id');
       getDetail(id);
     });
   }
