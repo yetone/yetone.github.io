@@ -1,67 +1,69 @@
 <!DOCTYPE html>
-<head>
-  <meta charset="utf-8">
-  <title>yetone 的博客</title>
-  <link rel="stylesheet" href="css/app.css">
-  <link rel="stylesheet" href="css/default.css">
-  <script src="js/highlight.pack.js"></script>
-  <script src="js/jquery.min.js"></script>
-  <script src="js/marked.min.js"></script>
-  <script src="js/moment.min.js"></script>
-  <script src="js/shani.js"></script>
-  <script src="js/lighthouse.js"></script>
-  <script src="js/app.js"></script>
-  <script type="text/template" id="gist-list-tpl">
-    <ul id="gist-list">
-      {% for _, gist in gists %}
-      <li class="gist-item" data-id="{{ gist.id }}" data-raw="{{ gist.files[filename].raw_url }}">
-        <a class="gist-title" href="#/blog/{{ gist.id }}">
-          {{ gist.description }}
-        </a>
-        <div class="gist-meta">
-          <a class="gist-created-at" href="#/blog/{{ gist.id }}">
-            {{ moment(gist.created_at).format('YYYY-MM-DD HH:mm:ss') }}
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>yetone 的博客</title>
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/default.css">
+    <script src="js/highlight.pack.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/marked.min.js"></script>
+    <script src="js/moment.min.js"></script>
+    <script src="js/shani.js"></script>
+    <script src="js/lighthouse.js"></script>
+    <script src="js/app.js"></script>
+    <script type="text/template" id="gist-list-tpl">
+      <ul id="gist-list">
+        {% for _, gist in gists %}
+        <li class="gist-item" data-id="{{ gist.id }}" data-raw="{{ gist.files[filename].raw_url }}">
+          <a class="gist-title" href="#/blog/{{ gist.id }}">
+            {{ gist.description }}
           </a>
-          <!--
-          <a class="gist-comment-count" href="#/blog/{{ gist.id }}">
-            {{ gist.comments }}
-          </a>
-          -->
-        </div>
-      </li>
-      {% end %}
-    </ul>
-  </script>
-  <script type="text/template" id="gist-detail-tpl">
-    <div data-version="0.1.1" id="gist-container">
-      <h1 class="blog-title"> {{ title }}</h1>
-      <div class="blog-content">
-        {{ marked(content) }}
-        {% for _, file in files %}
-          <div class="file">
-            <div class="file-header">
-              <span class="icon">
-                <b class="octicon octicon-gist"></b>
-              </span>
-              <a target="_blank" class="raw-url" href="{{ file.raw_url }}">{{ file.filename }}</a>
-            </div>
-            <div class="file-content">
-              {% if file.src %}
-              <iframe class="render-view" src="{{ file.src }}" sandbox="allow-scripts allow-same-origin"></iframe>
-              {% else %}
-              {{ marked('```' + (file.language ? file.language.toLowerCase() : '') + '\n' + file.content + '\n```') }}
-              {% end %}
-            </div>
+          <div class="gist-meta">
+            <a class="gist-created-at" href="#/blog/{{ gist.id }}">
+              {{ moment(gist.created_at).format('YYYY-MM-DD HH:mm:ss') }}
+            </a>
+            <!--
+            <a class="gist-comment-count" href="#/blog/{{ gist.id }}">
+              {{ gist.comments }}
+            </a>
+            -->
           </div>
+        </li>
         {% end %}
+      </ul>
+    </script>
+    <script type="text/template" id="gist-detail-tpl">
+      <div data-version="0.1.1" id="gist-container">
+        <h1 class="blog-title"> {{ title }}</h1>
+        <div class="blog-content">
+          {{ marked(content) }}
+          {% for _, file in files %}
+            <div class="file">
+              <div class="file-header">
+                <span class="icon">
+                  <b class="octicon octicon-gist"></b>
+                </span>
+                <a target="_blank" class="raw-url" href="{{ file.raw_url }}">{{ file.filename }}</a>
+              </div>
+              <div class="file-content">
+                {% if file.src %}
+                <iframe class="render-view" src="{{ file.src }}" sandbox="allow-scripts allow-same-origin"></iframe>
+                {% else %}
+                {{ marked('```' + (file.language ? file.language.toLowerCase() : '') + '\n' + file.content + '\n```') }}
+                {% end %}
+              </div>
+            </div>
+          {% end %}
+        </div>
+        <a class="blog-created-at" target="_blank" href="{{ html_url }}">{{ moment(created_at).format('YYYY-MM-DD HH:mm:ss') }}</a>
       </div>
-      <a class="blog-created-at" target="_blank" href="{{ html_url }}">{{ moment(created_at).format('YYYY-MM-DD HH:mm:ss') }}</a>
+    </script>
+  </head>
+  <body>
+    <div id="wrapper">
+      <div id="main">
+      </div>
     </div>
-  </script>
-</head>
-<body>
-  <div id="wrapper">
-    <div id="main">
-    </div>
-  </div>
-</body>
+  </body>
+</html>
