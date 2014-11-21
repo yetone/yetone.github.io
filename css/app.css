@@ -25,6 +25,9 @@ body {
   line-height: 18px;
   font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif;
 }
+h1, h2, h3, h4, h5, h6 {
+  font-weight: normal;
+}
 ul {
   list-style-type: square;
 }
@@ -79,9 +82,8 @@ header {
 }
 
 .blog-title {
-  font-size: 24px;
   padding-bottom: 10px;
-  font-weight: normal;
+  text-align: center;
 }
 
 .blog-content {
