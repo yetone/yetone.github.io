@@ -89,6 +89,14 @@ header {
   line-height: 1.8;
 }
 
+.blog-content hr {
+  display: block;
+  width: 14%;
+  margin: 40px auto 34px;
+  border: 0 none;
+  border-top: 3px solid #dededc;
+}
+
 .gist-item a {
 }
 
