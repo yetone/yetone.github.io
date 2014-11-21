@@ -25,6 +25,9 @@ body {
   line-height: 18px;
   font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif;
 }
+ul {
+  list-style-type: square;
+}
 a:link,
 a:visited {
   color: #000;
@@ -69,10 +72,6 @@ header {
   width: 920px;
   margin: 0 auto;
   margin-top: 60px;
-}
-
-#gist-list {
-  list-style-type: square;
 }
 
 .gist-item {
