@@ -56,7 +56,9 @@
             </div>
           {% end %}
         </div>
-        <a class="blog-created-at" target="_blank" href="{{ html_url }}">{{ moment(created_at).format('YYYY-MM-DD HH:mm:ss') }}</a>
+        {% if title.toLowerCase() !== 'resume' %}
+          <a class="blog-created-at" target="_blank" href="{{ html_url }}">{{ moment(created_at).format('YYYY-MM-DD HH:mm:ss') }}</a>
+        {% end %}
       </div>
     </script>
   </head>
